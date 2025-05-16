@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  web_service:
+    build:
+      context: ./web_service
+    container_name: web_service
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - net
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - web_service
+    restart: unless-stopped
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
